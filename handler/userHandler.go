@@ -16,7 +16,9 @@ func GetInfo(ctx *gin.Context) {
 	user, _ := ctx.Get("user")
 	ctx.JSON(200, gin.H{
 		"code": 200,
-		"user": user,
+		"data": gin.H{
+			"user": user,
+		},
 	})
 }
 

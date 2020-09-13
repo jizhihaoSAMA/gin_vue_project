@@ -23,7 +23,8 @@ func GetInfo(ctx *gin.Context) {
 }
 
 func Login(ctx *gin.Context) {
-	db := common.InitDB()
+	db := common.InitMySQL()
+	defer db.Close()
 	telephone := ctx.PostForm("telephone")
 	password := ctx.PostForm("password")
 	var user model.User
@@ -51,12 +52,12 @@ func Login(ctx *gin.Context) {
 
 	// 返回结果
 
-	response.Success(ctx, gin.H{token: token}, "登录成功")
+	response.Success(ctx, gin.H{"token": token}, "登录成功")
 }
 
 func Register(ctx *gin.Context) {
-	db := common.InitDB()
-
+	db := common.InitMySQL()
+	defer db.Close()
 	var u model.User
 	// 获取参数
 	ctx.Bind(&u)

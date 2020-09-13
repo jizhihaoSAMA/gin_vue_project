@@ -1,7 +1,6 @@
 package main
 
 import (
-	"gin_vue_project/common"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/spf13/viper"
@@ -10,8 +9,6 @@ import (
 
 func main() {
 	InitConfig()
-	db := common.InitDB()
-	defer db.Close()
 	r := gin.Default()
 	r = BindRoutes(r)
 	port := viper.GetString("server.port")

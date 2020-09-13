@@ -11,5 +11,9 @@ func BindRoutes(r *gin.Engine) *gin.Engine {
 	r.POST("/api/auth/register", handler.Register)
 	r.POST("/api/auth/login", handler.Login)
 	r.GET("/api/auth/info", middleware.AuthHandler(), handler.GetInfo)
+	r.GET("/test", handler.Test)
+	r.POST("/test", handler.TestWithPost)
+
+	r.GET("/api/get/news", handler.GetNews)
 	return r
 }

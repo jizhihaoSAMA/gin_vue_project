@@ -39,7 +39,7 @@ func AuthHandler() gin.HandlerFunc {
 		// 验证通过后获取claim中的userId
 
 		userId := claims.UserId
-		db := common.InitDB()
+		db := common.InitMySQL()
 		var user model.User
 		db.First(&user, userId)
 

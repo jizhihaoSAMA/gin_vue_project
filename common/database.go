@@ -1,21 +1,25 @@
 package common
 
 import (
+	"context"
 	"fmt"
 	"gin_vue_project/model"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
+	"time"
 )
 
-func InitDB() *gorm.DB {
-
-	driverName := viper.GetString("datasource.driverName")
-	host := viper.GetString("datasource.host")
-	port := viper.GetString("datasource.port")
-	database := viper.GetString("datasource.database")
-	username := viper.GetString("datasource.username")
-	password := viper.GetString("datasource.password")
-	charset := viper.GetString("datasource.charset")
+func InitMySQL() *gorm.DB {
+	driverName := viper.GetString("dataSource.MySQL.driverName")
+	host := viper.GetString("dataSource.MySQL.host")
+	port := viper.GetString("dataSource.MySQL.port")
+	database := viper.GetString("dataSource.MySQL.database")
+	username := viper.GetString("dataSource.MySQL.username")
+	password := viper.GetString("dataSource.MySQL.password")
+	charset := viper.GetString("dataSource.MySQL.charset")
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username,
 		password,
@@ -31,4 +35,24 @@ func InitDB() *gorm.DB {
 	}
 	db.AutoMigrate(&model.User{})
 	return db
+}
+
+func InitMongoDB() (*mongo.Database, context.CancelFunc) {
+	uri := fmt.Sprintf("%s://%s:%s",
+		viper.GetString("dataSource.MongoDB.driverName"),
+		viper.GetString("dataSource.MongoDB.host"),
+		viper.GetString("dataSource.MongoDB.port"),
+	)
+	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 创建一个有超时限制的上下文
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return client.Database(viper.GetString("dataSource.MongoDB.database")), cancel
 }

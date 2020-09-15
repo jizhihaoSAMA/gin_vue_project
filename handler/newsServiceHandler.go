@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"gin_vue_project/common"
 	"gin_vue_project/model"
 	"github.com/gin-gonic/gin"
@@ -14,6 +13,7 @@ import (
 )
 
 func GetNews(ctx *gin.Context) {
+	log.SetFlags(log.Ldate | log.Lshortfile)
 	db, cancel := common.InitMongoDB()
 	defer cancel()
 	collection := db.Collection("test")
@@ -23,12 +23,14 @@ func GetNews(ctx *gin.Context) {
 		var newsContent model.NormalNews
 		objectID, err := primitive.ObjectIDFromHex(id)
 		if err != nil {
-			log.Fatal(err)
+			ctx.JSON(404, gin.H{
+				"code": 404,
+				"msg":  "Not found",
+			})
 		}
 		filter := bson.D{{"_id", objectID}}
 		err = collection.FindOne(context.Background(), filter).Decode(&newsContent)
-		if err != nil {
-			fmt.Println(err.Error())
+		if err != nil { // 此时找不到该新闻
 			ctx.JSON(404, gin.H{
 				"code": 404,
 				"msg":  "Not found",
@@ -59,7 +61,6 @@ func GetNews(ctx *gin.Context) {
 		var news model.News
 		var tmp gin.H
 		err := cur.Decode(&news)
-		fmt.Println(news)
 		if err != nil {
 			log.Fatal(err)
 		}

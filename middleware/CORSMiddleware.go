@@ -8,7 +8,8 @@ import (
 func CORSMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// 设置跨域请求的来源
-		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		//ctx.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		// 设置跨域请求的缓存时间
 		ctx.Writer.Header().Set("Access-Control-Max-Age", "86400")
 		// 设置通过访问的方法, "GET,POST,DELETE,PUT"或所有方法

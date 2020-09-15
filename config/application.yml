@@ -5,10 +5,11 @@ dataSource:
     driverName: "mysql"
     host: "127.0.0.1"
     port: "3306"
-    database: "try"
+    database: "project_news"
     username: "root"
     password: "Zz7722559"
     charset: "utf8"
+    loc: "Local"
   MongoDB:
     driverName: "mongodb"
     host: "127.0.0.1"

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func AuthHandler() gin.HandlerFunc {
+func UserServiceAuthHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// 获取authorization header
 		tokenString := ctx.GetHeader("Authorization")
@@ -59,3 +59,9 @@ func AuthHandler() gin.HandlerFunc {
 
 	}
 }
+
+//func PostCommentAuthHandler() gin.HandlerFunc{
+//	return func(ctx *gin.Context) {
+//
+//	}
+//}

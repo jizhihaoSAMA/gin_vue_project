@@ -20,20 +20,22 @@ func InitMySQL() *gorm.DB {
 	username := viper.GetString("dataSource.MySQL.username")
 	password := viper.GetString("dataSource.MySQL.password")
 	charset := viper.GetString("dataSource.MySQL.charset")
-	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
+	loc := viper.GetString("dataSource.MySQL.loc")
+	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true&loc=%s",
 		username,
 		password,
 		host,
 		port,
 		database,
 		charset,
+		loc,
 	)
 
 	db, err := gorm.Open(driverName, args)
 	if err != nil {
 		panic("链接失败，错误:" + err.Error())
 	}
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Comment{})
 	return db
 }
 

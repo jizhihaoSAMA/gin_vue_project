@@ -29,3 +29,7 @@ func InterfaceToUserDto(value interface{}) dto.UserDto {
 	}
 	return u
 }
+
+//func StructToMap(value interface{}) struct{} {
+//
+//}

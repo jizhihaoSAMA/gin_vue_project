@@ -12,4 +12,5 @@ type Comment struct {
 	Comment   string    `form:"comment" gorm:"varchar(300)"`
 	NewsID    string    `form:"news_id"`
 	UserID    uint
+	Floor     int
 }

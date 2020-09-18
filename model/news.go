@@ -12,9 +12,10 @@ type News struct {
 }
 
 type NormalNews struct {
-	Title   string `json:"title" bson:"title"`
-	Content bson.A `json:"content"`
-	From    string `json:"from"`
-	Images  bson.A `json:"images"`
-	Type    string `json:"type" bson:"type"`
+	Title         string `json:"title" bson:"title"`
+	Content       bson.A `json:"content"`
+	From          string `json:"from"`
+	Images        bson.A `json:"images"`
+	Type          string `json:"type" bson:"type"`
+	CommentAmount int    `json:"comment_amount" bson:"comment_amount"`
 }

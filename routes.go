@@ -24,5 +24,8 @@ func BindRoutes(r *gin.Engine) *gin.Engine {
 	r.GET("/api/get/comments", handler.GetComments)
 	r.POST("/api/post/comment", middleware.UserServiceAuthHandler(), handler.PostComment)
 
+	//Captcha Service
+	r.POST("/api/post/getCaptcha", handler.SendMessageHandler)
+
 	return r
 }

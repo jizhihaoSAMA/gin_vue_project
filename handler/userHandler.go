@@ -64,6 +64,7 @@ func Register(ctx *gin.Context) {
 	username := u.Username
 	telephone := u.Telephone
 	password := u.Password
+
 	fmt.Println(username, telephone, password)
 	// 检查手机号是否小于11位
 	if len(telephone) != 11 {
@@ -96,19 +97,34 @@ func Register(ctx *gin.Context) {
 		Telephone: telephone,
 		Password:  string(hashedPassword),
 	}
-	// 创建用户
-	db.Create(&newUser)
 
-	token, err := common.GetToken(newUser)
+	// 验证码检测
+	captcha := ctx.PostForm("captcha")
+	rdb := common.InitRedis()
+	defer rdb.Close()
+	captchaInRedis, err := rdb.Get(telephone).Result()
+	fmt.Println(captchaInRedis, captcha)
+	if captchaInRedis == captcha { // 相同代表正确
+		// 创建用户
+		db.Create(&newUser)
 
-	if err != nil {
-		response.Response(ctx, 500, 500, nil, "系统异常")
-		log.Println("token generate error:" + err.Error())
+		token, err := common.GetToken(newUser)
+
+		if err != nil {
+			response.Response(ctx, 500, 500, nil, "系统异常")
+			log.Println("token generate error:" + err.Error())
+			return
+		}
+
+		response.Success(ctx, gin.H{"token": token}, "注册成功")
+		log.Println(username, password, telephone)
+	} else {
+		ctx.JSON(403, gin.H{
+			"code": "403",
+			"msg":  "验证码不正确",
+		})
 		return
 	}
-
-	response.Success(ctx, gin.H{"token": token}, "注册成功")
-	log.Println(username, password, telephone)
 }
 
 func isTelephoneExist(db *gorm.DB, telephone string) bool {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gin_vue_project/model"
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -57,4 +58,18 @@ func InitMongoDB() (*mongo.Database, context.CancelFunc) {
 	}
 
 	return client.Database(viper.GetString("dataSource.MongoDB.database")), cancel
+}
+
+func InitRedis() *redis.Client {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "root", // no password set
+		DB:       0,      // use default DB
+	})
+
+	_, err := rdb.Ping().Result()
+	if err != nil {
+		return nil
+	}
+	return rdb
 }

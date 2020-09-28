@@ -1,5 +1,10 @@
 server:
   port: 8081
+messageInfo:
+  APIAccount: "8a216da874af5fff0174b45a5926026f"
+  APIToken: "4b923369078c476d997901df5c77598f"
+  AppID: "8a216da874af5fff0174b45a5a2b0276"
+  TemplateID: "1"
 dataSource:
   MySQL:
     driverName: "mysql"

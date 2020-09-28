@@ -2,7 +2,7 @@ package handler
 
 import (
 	"context"
-	"encoding/json"
+	"fmt"
 	"gin_vue_project/common"
 	"gin_vue_project/dto"
 	"gin_vue_project/model"
@@ -31,6 +31,9 @@ func PostComment(ctx *gin.Context) {
 	}
 
 	comment.UserID = userDto.ID
+	comment.Username = userDto.Username
+
+	fmt.Println(comment)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -83,17 +86,11 @@ func PostComment(ctx *gin.Context) {
 func GetComments(ctx *gin.Context) {
 	db := common.InitMySQL()
 	defer db.Close()
-	var result []model.Comment
-	db.Where("news_id = ? AND is_deleted = false", ctx.Query("news_id")).Find(&result)
+	var results []model.Comment
+	db.Where("news_id = ? AND is_deleted = false", ctx.Query("news_id")).Find(&results)
 
-	b, _ := json.Marshal(&result)
-	var tmp []gin.H
-	err := json.Unmarshal(b, &tmp)
-	if err != nil {
-		log.Fatal(err)
-	}
 	ctx.JSON(200, gin.H{
 		"code": 200,
-		"data": tmp,
+		"data": results,
 	})
 }

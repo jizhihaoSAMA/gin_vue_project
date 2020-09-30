@@ -56,7 +56,6 @@ func SendMessage(telephone string) string {
 		Datas: []string{captchaCode, "x分钟"},
 	}
 	// 下发
-	fmt.Println(telephone)
 	resp, err := sms.Send(input)
 	if err != nil {
 		log.Fatal(err)

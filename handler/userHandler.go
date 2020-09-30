@@ -32,7 +32,7 @@ func Login(ctx *gin.Context) {
 	// 判断手机号是否存在, 并将数据保存到user变量种
 	db.Where("telephone = ?", telephone).First(&user)
 	if user.ID == 0 {
-		response.Response(ctx, 422, 422, nil, "用户已存在")
+		response.Response(ctx, 422, 422, nil, "用户不存在")
 		return
 	}
 
@@ -103,7 +103,7 @@ func Register(ctx *gin.Context) {
 	rdb := common.InitRedis()
 	defer rdb.Close()
 	captchaInRedis, err := rdb.Get(telephone).Result()
-	fmt.Println(captchaInRedis, captcha)
+	//fmt.Println("1", captchaInRedis, captcha) 正常运行
 	if captchaInRedis == captcha { // 相同代表正确
 		// 创建用户
 		db.Create(&newUser)

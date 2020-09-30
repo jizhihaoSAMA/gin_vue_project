@@ -10,7 +10,6 @@ import (
 
 func SendMessageHandler(ctx *gin.Context) {
 	telephone := ctx.PostForm("telephone")
-	fmt.Println(telephone)
 	// 如果电话为空
 	if telephone == "" {
 		ctx.JSON(200, gin.H{

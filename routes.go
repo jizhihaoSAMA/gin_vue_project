@@ -27,5 +27,7 @@ func BindRoutes(r *gin.Engine) *gin.Engine {
 	//Captcha Service
 	r.POST("/api/post/getCaptcha", handler.SendMessageHandler)
 
+	//Translate Service
+	r.POST("/api/post/translate", handler.Translate)
 	return r
 }

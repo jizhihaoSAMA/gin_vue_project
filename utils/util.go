@@ -65,3 +65,9 @@ func SendMessage(telephone string) string {
 	return captchaCode
 
 }
+
+func GetLoggerWithTimeAndLine() *log.Logger {
+	var logger log.Logger
+	logger.SetFlags(log.Ldate | log.Lshortfile)
+	return &logger
+}

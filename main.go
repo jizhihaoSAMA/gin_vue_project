@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/spf13/viper"
-	"log"
 	"os"
 )
 
@@ -13,7 +12,7 @@ func main() {
 	r := gin.Default()
 	r = BindRoutes(r)
 
-	port := viper.GetString("server.port")
+	port := viper.GetString("port.server")
 	if port != "" {
 		panic(r.Run(":" + port))
 	}
@@ -23,7 +22,6 @@ func main() {
 
 func InitConfig() {
 	workDir, _ := os.Getwd()
-	log.SetFlags(log.Ldate | log.Lshortfile)
 	viper.SetConfigName("application")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir + "/config")

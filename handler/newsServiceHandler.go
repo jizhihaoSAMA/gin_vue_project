@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"gin_vue_project/common"
 	"gin_vue_project/model"
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,7 @@ func GetNews(ctx *gin.Context) {
 	collection := db.Collection("test")
 
 	id := ctx.Query("id")
-	if id != "" {
+	if id != "" { // 获取具体的新闻
 		var newsContent model.NormalNews
 		objectID, err := primitive.ObjectIDFromHex(id)
 		if err != nil {
@@ -49,10 +50,11 @@ func GetNews(ctx *gin.Context) {
 		}
 		return
 	}
-
+	// 获取列表
 	var newsList []gin.H
-
-	cur, err := collection.Find(context.Background(), bson.D{{}})
+	newsType := ctx.Query("news_type")
+	fmt.Println(newsType)
+	cur, err := collection.Find(context.Background(), bson.D{{"type", newsType}})
 
 	if err != nil {
 		log.Fatal(err)

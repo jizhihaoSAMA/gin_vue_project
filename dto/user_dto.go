@@ -12,6 +12,6 @@ func ToUserDto(user model.User) UserDto {
 	return UserDto{
 		ID:        user.ID,
 		Username:  user.Username,
-		Telephone: user.Telephone,
+		Telephone: user.Telephone[:3] + "********",
 	}
 }

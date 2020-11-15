@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
 )
@@ -29,20 +30,40 @@ func GetNews(ctx *gin.Context) {
 				"msg":  "Not found",
 			})
 		}
-		filter := bson.D{{"_id", objectID}}
-		err = collection.FindOne(context.Background(), filter).Decode(&newsContent)
+		filter := bson.M{"_id": objectID}
+		var update bson.M
+		if true {
+			update = bson.M{
+				"$inc": bson.M{
+					"view_amount": 1,
+				},
+			}
+		} else {
+			update = bson.M{
+				"$inc": bson.M{
+					"view_amount": 0,
+				},
+			}
+		}
+		after := options.After
+		opt := options.FindOneAndUpdateOptions{
+			ReturnDocument: &after,
+		}
+		err = collection.FindOneAndUpdate(context.Background(), filter, update, &opt).Decode(&newsContent)
 		if err != nil { // 此时找不到该新闻
 			ctx.JSON(404, gin.H{
 				"code": 404,
 				"msg":  "Not found",
 			})
 		} else {
+			newsContent.ConvertedTime = newsContent.OriginalTime.Format("2006年01月02日 15:04:05")
 			b, _ := json.Marshal(&newsContent)
 			var tmp gin.H
 			err = json.Unmarshal(b, &tmp)
 			if err != nil {
 				log.Fatal(err)
 			}
+			fmt.Printf("%T", tmp)
 			ctx.JSON(200, gin.H{
 				"code": 200,
 				"data": tmp,

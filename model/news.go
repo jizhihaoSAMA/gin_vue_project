@@ -12,13 +12,15 @@ type News struct {
 }
 
 type NormalNews struct {
-	URL           string `json:"url" bson:"url"`
-	Title         string `json:"title" bson:"title"`
-	Content       bson.A `json:"content"`
-	From          string `json:"from"`
-	Images        bson.A `json:"images"`
-	Type          string `json:"type" bson:"type"`
-	CommentAmount int    `json:"comment_amount" bson:"comment_amount"`
-	ViewAmount    int    `json:"view_amount" bson:"view_amount"`
-	Layout        string `json:"layout" bson:"layout"`
+	URL           string    `json:"url" bson:"url"`
+	Title         string    `json:"title" bson:"title"`
+	Content       bson.A    `json:"content"`
+	From          string    `json:"from"`
+	Images        bson.A    `json:"images"`
+	Type          string    `json:"type" bson:"type"`
+	CommentAmount int       `json:"comment_amount" bson:"comment_amount"`
+	ViewAmount    int       `json:"view_amount" bson:"view_amount"`
+	Layout        string    `json:"layout" bson:"layout"`
+	OriginalTime  time.Time `bson:"time" json:"-"`
+	ConvertedTime string    `json:"time"`
 }

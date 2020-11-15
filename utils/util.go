@@ -53,7 +53,7 @@ func SendMessage(telephone string) string {
 		// 模版ID
 		TemplateId: viper.GetString("messageInfo.TemplateID"),
 		// 模版变量内容 非必
-		Datas: []string{captchaCode, "x分钟"},
+		Datas: []string{captchaCode, "5"},
 	}
 	// 下发
 	resp, err := sms.Send(input)

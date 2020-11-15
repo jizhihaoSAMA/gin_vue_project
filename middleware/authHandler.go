@@ -60,8 +60,8 @@ func UserServiceAuthHandler() gin.HandlerFunc {
 	}
 }
 
-//func PostCommentAuthHandler() gin.HandlerFunc{
-//	return func(ctx *gin.Context) {
-//
-//	}
-//}
+func UserSessionValid() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+	}
+}

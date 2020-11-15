@@ -2,6 +2,7 @@ package main
 
 import (
 	"gin_vue_project/handler"
+	"gin_vue_project/handler/userSecurity"
 	"gin_vue_project/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -9,9 +10,12 @@ import (
 func BindRoutes(r *gin.Engine) *gin.Engine {
 	r.Use(middleware.CORSMiddleware())
 	// User Service
-	r.POST("/api/auth/register", handler.Register)
-	r.POST("/api/auth/login", handler.Login)
-	r.GET("/api/auth/info", middleware.UserServiceAuthHandler(), handler.GetInfo)
+	authGroup := r.Group("/api/auth")
+	{
+		authGroup.POST("register", handler.Register)
+		authGroup.POST("login", handler.Login)
+		authGroup.GET("info", middleware.UserServiceAuthHandler(), handler.GetInfo)
+	}
 
 	// Test Service
 	r.GET("/test", handler.Test)
@@ -24,10 +28,14 @@ func BindRoutes(r *gin.Engine) *gin.Engine {
 	r.GET("/api/get/comments", handler.GetComments)
 	r.POST("/api/post/comment", middleware.UserServiceAuthHandler(), handler.PostComment)
 
-	//Captcha Service
+	// Security Service
 	r.POST("/api/post/getCaptcha", handler.SendMessageHandler)
+	// 修改手机号时的服务。
+	r.POST("/api/post/authOfChangeTelephone", middleware.UserServiceAuthHandler(), userSecurity.AuthOfChangeTelephone)
+	r.POST("/api/post/updateUserTelephone", middleware.UserServiceAuthHandler(), userSecurity.UpdateUserTelephone)
 
-	//Translate Service
+	// RPC
 	r.POST("/api/post/translate", handler.Translate)
+
 	return r
 }

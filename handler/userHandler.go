@@ -102,8 +102,8 @@ func Register(ctx *gin.Context) {
 	captcha := ctx.PostForm("captcha")
 	rdb := common.InitRedis()
 	defer rdb.Close()
-	captchaInRedis, err := rdb.Get(telephone).Result()
-	//fmt.Println("1", captchaInRedis, captcha) 正常运行
+	captchaInRedis, err := rdb.Get(telephone + "_reg").Result()
+
 	if captchaInRedis == captcha { // 相同代表正确
 		// 创建用户
 		db.Create(&newUser)

@@ -3,7 +3,6 @@ package common
 import (
 	"context"
 	"fmt"
-	"gin_vue_project/model"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
@@ -36,7 +35,6 @@ func InitMySQL() *gorm.DB {
 	if err != nil {
 		panic("链接失败，错误:" + err.Error())
 	}
-	db.AutoMigrate(&model.User{}, &model.Comment{})
 	return db
 }
 

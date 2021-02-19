@@ -1,5 +1,5 @@
 port:
-  server: 8081
+  server: 8080
   grpcServer: 10010
 messageInfo:
   APIAccount: "8a216da874af5fff0174b45a5926026f"

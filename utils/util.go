@@ -10,6 +10,21 @@ import (
 	"time"
 )
 
+const (
+	UploadUserIcon string = "uploadUserIcon"
+)
+
+func FormatMapper(service string, format string) string {
+	var mapper map[string]string
+	if service == UploadUserIcon {
+		mapper = make(map[string]string)
+		mapper["image/png"] = ".png"
+		mapper["image/jpg"] = ".jpg"
+		mapper["image/jpeg"] = ".jpg"
+	} // else {} 其他业务上传再做
+	return mapper[format]
+}
+
 func RandomString(n int) string {
 	var letters = []byte("asdfghjklzxcvbnmqwertyuiopASDFGHJKLZXCVBNMQWERTYUIOP")
 	result := make([]byte, n)

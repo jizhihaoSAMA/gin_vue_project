@@ -19,3 +19,7 @@ func Success(ctx *gin.Context, data gin.H, msg string) {
 func Fail(ctx *gin.Context, data gin.H, msg string) {
 	Response(ctx, 400, 400, data, msg)
 }
+
+func ServerError(ctx *gin.Context, data gin.H, msg string) {
+	Response(ctx, 500, 500, data, msg)
+}

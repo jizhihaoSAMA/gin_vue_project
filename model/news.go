@@ -12,6 +12,7 @@ type News struct {
 }
 
 type NormalNews struct {
+	ID            string    `json:"id" bson:"_id"`
 	URL           string    `json:"url" bson:"url"`
 	Title         string    `json:"title" bson:"title"`
 	Content       bson.A    `json:"content"`

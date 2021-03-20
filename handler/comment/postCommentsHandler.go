@@ -6,6 +6,7 @@ import (
 	"gin_vue_project/dto"
 	"gin_vue_project/model"
 	"gin_vue_project/response"
+	"gin_vue_project/service/newsService"
 	"gin_vue_project/service/userService/userNotice"
 	"gin_vue_project/utils"
 	"github.com/gin-gonic/gin"
@@ -39,7 +40,6 @@ func PostCommentHandler(ctx *gin.Context) {
 
 	comment.UserID = userDto.ID
 
-	log.Println(comment.TargetCommentID)
 	// 判断评论长度
 	if len(comment.Comment) >= 50 || len(comment.Comment) < 5 {
 		ctx.JSON(400, gin.H{
@@ -80,9 +80,15 @@ func PostCommentHandler(ctx *gin.Context) {
 	mysqlDB := common.InitMySQL()
 	defer mysqlDB.Close()
 	_ = mysqlDB.Create(&comment)
-
-	if !userNotice.SetNoticeForUserByComment(comment) {
-		response.Fail(ctx, nil, "用户不存在，无法添加通知")
+	if comment.TargetCommentID != 0 {
+		if ok := userNotice.SetNoticeForUserByComment(comment); !ok {
+			response.Fail(ctx, nil, "用户不存在，无法添加通知")
+			return
+		}
+	}
+	// 为新闻增加热度
+	if ok := newsService.AddHotValueByNewsID(comment.NewsID, 0.3); !ok {
+		response.ServerError(ctx, nil, "服务器错误")
 		return
 	}
 

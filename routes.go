@@ -30,17 +30,25 @@ func BindRoutes(r *gin.Engine) *gin.Engine {
 	r.POST("/api/test", handler.TestWithPost)
 
 	// News Service
-	r.GET("/api/get/news", news.GetNewsHandler)
+	r.GET("/api/get/news", middleware.IsUser(), news.GetNewsHandler)
+	r.GET("/api/get/hotNews", news.GetHotNews)
 
 	// Vote Service
 	r.POST("/api/post/voteOnComment", comment.VoteOnCommentHandler)
 
+	// Follow Service
+	r.POST("/api/post/followUser", middleware.IsUser(), user.FollowUserHandler)
+
+	// Notice Service
+	r.POST("/api/post/getUnreadAmount", user.GetUnreadAmount)
+	r.POST("/api/post/getRecentNotice", middleware.IsUser(), user.GetRecentNotices)
+	r.POST("/api/post/getAllNotice", user.GetAllNotices)
+
 	// Comment Service
 	r.GET("/api/get/comments", middleware.IsUser(), comment.GetCommentsHandler)
+
 	r.POST("/api/post/comment", middleware.UserServiceAuthHandler(), comment.PostCommentHandler)
-
 	r.POST("/api/post/commentAmount", comment.GetCommentAmountHandler)
-
 	r.POST("/api/post/getPage", comment.GetPageOfCommentHandler)
 
 	// Security Service

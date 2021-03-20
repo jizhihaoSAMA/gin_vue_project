@@ -31,6 +31,8 @@ func main() {
 		&model.User{},
 		&model.Comment{},
 		&model.Vote{},
+		&model.FollowRow{},
+		&model.View{},
 	)
 
 	db.LogMode(true)

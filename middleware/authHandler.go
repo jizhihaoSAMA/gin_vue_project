@@ -81,7 +81,7 @@ func IsUser() gin.HandlerFunc {
 
 		token, claims, err := common.ParseToken(tokenString)
 
-		if err != nil || !token.Valid {
+		if err != nil || !token.Valid { // 尚未登陆的用户，isUser值为0
 			ctx.Set("isUser", 0)
 			ctx.Next()
 			return

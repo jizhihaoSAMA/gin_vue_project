@@ -14,11 +14,16 @@ type UserDto struct {
 }
 
 func ToUserDto(user model.User) UserDto {
+	var emailDto string
+	if user.Email != "" {
+		emailDto = user.Email[:3] + "*****" + user.Email[strings.IndexByte(user.Email, '@'):]
+	}
+
 	return UserDto{
 		ID:        user.ID,
 		Username:  user.Username,
 		Telephone: user.Telephone[:3] + "********",
-		Email:     user.Email[:3] + "*****" + user.Email[strings.IndexByte(user.Email, '@'):],
+		Email:     emailDto,
 		Detail:    user.Detail,
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"gin_vue_project/model"
 	"gin_vue_project/response"
 	"gin_vue_project/service/userService"
+	"gin_vue_project/service/userService/userNotice"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -80,7 +81,7 @@ func VoteOnCommentHandler(ctx *gin.Context) {
 		response.Success(ctx, nil, "点赞成功")
 
 		// 通知用户，为用户增加一个通知，并将未读消息数量 + 1
-		userService.SetNoticeForUserWithCommentID(targetComment.ID)
+		userNotice.SetNoticeForUserByComment(targetComment)
 
 	} else if *postVote.Status == -1 {
 		/*

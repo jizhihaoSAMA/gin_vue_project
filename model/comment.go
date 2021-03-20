@@ -31,3 +31,7 @@ type Comment struct {
 	Downvote        int       `json:"downvote"               `
 	TargetCommentID uint      `json:"target_comment_id"      form:"target_comment_id"`
 }
+
+func (c Comment) GetTime() time.Time {
+	return c.CreatedAt
+}
